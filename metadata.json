@@ -1,0 +1,6 @@
+{
+  "name": "BobaFlow 飲料店庫存與銷售管理系統",
+  "description": "專業手搖飲門市 POS 前台點單收銀與後台原物料庫存自動扣減、補貨預警及即時銷售分析報表系統",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

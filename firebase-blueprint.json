@@ -1,0 +1,248 @@
+{
+  "entities": {
+    "Member": {
+      "title": "Member",
+      "description": "Store customer membership record with loyalty points, verification status, and contact details",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique member identifier"
+        },
+        "memberCode": {
+          "type": "string",
+          "description": "Display membership code e.g. BF-8801"
+        },
+        "name": {
+          "type": "string",
+          "description": "Customer full name"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Member phone number for POS checkout lookup"
+        },
+        "email": {
+          "type": "string",
+          "description": "Customer email address for verification"
+        },
+        "emailVerified": {
+          "type": "boolean",
+          "description": "Whether customer has completed Firebase email verification"
+        },
+        "authUid": {
+          "type": "string",
+          "description": "Firebase Auth user UID"
+        },
+        "verificationStatus": {
+          "type": "string",
+          "description": "Member status: approved, pending_approval, or suspended"
+        },
+        "verificationMethod": {
+          "type": "string",
+          "description": "Verification method: email_verified, admin_manual, or auto"
+        },
+        "points": {
+          "type": "number",
+          "description": "Accumulated reward points"
+        },
+        "totalSpent": {
+          "type": "number",
+          "description": "Total amount spent in NTD"
+        },
+        "orderCount": {
+          "type": "number",
+          "description": "Total number of completed orders"
+        },
+        "registeredAt": {
+          "type": "string",
+          "description": "Registration date and time string"
+        },
+        "birthday": {
+          "type": "string",
+          "description": "Customer birthday (optional)"
+        },
+        "preferredSugar": {
+          "type": "string",
+          "description": "Preferred sweetness level"
+        },
+        "preferredIce": {
+          "type": "string",
+          "description": "Preferred ice level"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Staff or customer notes"
+        }
+      },
+      "required": [
+        "id",
+        "memberCode",
+        "name",
+        "phone",
+        "email",
+        "points",
+        "totalSpent",
+        "orderCount",
+        "registeredAt"
+      ]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Beverage store sales transaction and member point accumulation record",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique order identifier"
+        },
+        "orderNumber": {
+          "type": "string",
+          "description": "Formatted order number e.g. #B101"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Transaction date and time string"
+        },
+        "diningType": {
+          "type": "string",
+          "description": "takeaway, dine_in, or delivery"
+        },
+        "subtotal": {
+          "type": "number",
+          "description": "Order subtotal before discounts"
+        },
+        "ecoDiscount": {
+          "type": "number",
+          "description": "Eco cup rebate amount"
+        },
+        "otherDiscount": {
+          "type": "number",
+          "description": "Other discount amount"
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "Final paid amount in NTD"
+        },
+        "totalCups": {
+          "type": "number",
+          "description": "Total beverage cups ordered"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "Payment method used"
+        },
+        "status": {
+          "type": "string",
+          "description": "Order status: completed or cancelled"
+        },
+        "clerk": {
+          "type": "string",
+          "description": "Cashier staff name"
+        },
+        "memberId": {
+          "type": "string",
+          "description": "Associated member ID if applicable"
+        },
+        "memberName": {
+          "type": "string",
+          "description": "Associated member name"
+        },
+        "memberPhone": {
+          "type": "string",
+          "description": "Associated member phone number"
+        },
+        "pointsEarned": {
+          "type": "number",
+          "description": "Reward points earned from this order"
+        }
+      },
+      "required": [
+        "id",
+        "orderNumber",
+        "timestamp",
+        "diningType",
+        "totalAmount",
+        "totalCups",
+        "paymentMethod",
+        "status"
+      ]
+    },
+    "StaffAccount": {
+      "title": "StaffAccount",
+      "description": "Staff and administrator accounts for BobaFlow system access control and cloud password verification",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique staff account record ID"
+        },
+        "account": {
+          "type": "string",
+          "description": "Staff login username or account ID"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Staff member name or title"
+        },
+        "role": {
+          "type": "string",
+          "description": "System role: admin, manager, or staff"
+        },
+        "email": {
+          "type": "string",
+          "description": "Staff contact email address"
+        },
+        "password": {
+          "type": "string",
+          "description": "Encrypted or hashed password string stored in cloud database"
+        },
+        "status": {
+          "type": "string",
+          "description": "Account status: active or disabled"
+        },
+        "allowedTabs": {
+          "type": "array",
+          "description": "List of accessible navigation tabs and system modules",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lastLoginAt": {
+          "type": "string",
+          "description": "Timestamp of most recent successful login"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Account creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when account details or password were last updated"
+        }
+      },
+      "required": [
+        "id",
+        "account",
+        "displayName",
+        "role",
+        "email",
+        "password",
+        "status"
+      ]
+    }
+  },
+  "firestore": {
+    "/members/{memberId}": {
+      "schema": "Member",
+      "description": "Customer membership profiles and loyalty points"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Sales orders and customer purchase history"
+    },
+    "/staff_accounts/{accountId}": {
+      "schema": "StaffAccount",
+      "description": "Authorized staff credentials and system access permissions"
+    }
+  }
+}

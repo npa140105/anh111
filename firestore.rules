@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Connection test document
+    match /test/{docId} {
+      allow read: if true;
+    }
+
+    // Member profiles & points collection
+    match /members/{memberId} {
+      allow read: if true;
+      allow create: if request.resource.data.id is string
+        && request.resource.data.id.size() <= 128
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.phone is string
+        && request.resource.data.phone.size() <= 50
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 150
+        && request.resource.data.points is number
+        && request.resource.data.points >= 0;
+      allow update: if request.resource.data.id is string
+        && request.resource.data.points is number
+        && request.resource.data.points >= 0;
+      allow delete: if true;
+    }
+
+    // Orders & purchase history collection
+    match /orders/{orderId} {
+      allow read: if true;
+      allow create: if request.resource.data.id is string
+        && request.resource.data.id.size() <= 128
+        && request.resource.data.orderNumber is string
+        && request.resource.data.orderNumber.size() <= 50
+        && request.resource.data.totalAmount is number
+        && request.resource.data.totalAmount >= 0;
+      allow update: if request.resource.data.id is string
+        && request.resource.data.status is string;
+      allow delete: if false;
+    }
+
+    // Staff accounts & credentials collection
+    match /staff_accounts/{accountId} {
+      allow read: if true;
+      allow create: if request.resource.data.id is string
+        && request.resource.data.account is string
+        && request.resource.data.account.size() <= 100
+        && request.resource.data.password is string;
+      allow update: if request.resource.data.id is string
+        && request.resource.data.password is string;
+      allow delete: if false;
+    }
+  }
+}
